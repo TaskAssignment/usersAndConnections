@@ -50,8 +50,6 @@ export class SiteHeaderComponent {
         this.alertMessage = 'You have incorrect login credentials.';
         this.showAlert = true;
       }
-    }).catch(result => {
-      
     });
 
   }
