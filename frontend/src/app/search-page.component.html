@@ -1,10 +1,27 @@
-<div class="col-md-6">
-  <form [formGroup]="myForm" (ngSubmit)="update(myForm.value)">
+<div class="col-md-12">
+  <h4>Search Users</h4>
+  <span *ngIf="showAlert">
+    <div class="alert alert-{{ alert.type }}">{{ alert.message}}</div>
+  </span>
+  <form [formGroup]="myForm" (ngSubmit)="search(myForm.value)">
     <div class="form-group">
-      <label>Name: </label><input name="name" type="text" class="form-control" placeholder="Name" value="{{ data.name }}" [formControl]="myForm.controls['name']" />
+      <input name="query" type="text" class="form-control" placeholder="Name" [formControl]="myForm.controls['query']" />
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-primary">Update Information</button>
+      <button type="submit" class="btn btn-primary">Search</button>
     </div>
   </form>
+
+  <div *ngIf="hasResults">
+    <table class="table">
+      <tr>
+        <td><b>Username</b></td>
+        <td><b>Name</b></td>
+      </tr>
+      <tr *ngFor="let item of results">
+        <td>{{item.username}}</td>
+        <td>{{item.name}}</td>
+      </tr>
+    </table>
+  </div>
 </div>

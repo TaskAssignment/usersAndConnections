@@ -92,7 +92,8 @@ app.framework.post('/search', function(req, res) {
 
   return handler(users.search(req.body.query), res, {
     errormsg: 'No results found.',
-    sendData: true
+    sendData: true,
+    fetchAll: true
   })
 
 })

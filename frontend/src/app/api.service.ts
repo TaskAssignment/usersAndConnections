@@ -79,6 +79,22 @@ export class ApiService {
     });
   }
 
+  public searchUsers(query) {
+    let header = new Headers();
+    header.append('authorization', localStorage.getItem('userToken'))
+    header.append('content-type', 'application/json')
+    return this.http.post(this.endpoint+'search', {
+      query: query
+    }, {
+      headers: header
+    }).toPromise().then(resp => {
+      return JSON.parse(resp.text())
+    }).catch(resp => {
+      alert('Server Error!')
+      return false
+    });
+  }
+
   public updateProfile(name) {
     let header = new Headers();
     header.append('authorization', localStorage.getItem('userToken'))

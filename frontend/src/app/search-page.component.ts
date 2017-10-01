@@ -12,10 +12,30 @@ import 'rxjs/add/operator/catch';
 
 export class SearchPageComponent {
   @Input('master') master;
-
-
+  myForm: FormGroup;
+  alert = {};
+  showAlert = false;
+  results = {};
+  hasResults = false;
 
   constructor(private apiService: ApiService, fb: FormBuilder){
+    this.myForm = fb.group({
+      'query': [''],
+    })
+  }
+
+  public search(form) {
+    this.showAlert = false;
+    this.apiService.searchUsers(form.query).then(resp => {
+      if(resp && resp.length) {
+        this.hasResults = true;
+        this.results = resp;
+      } else {
+        this.alert = {type: 'warning', message: 'Could not find any users with that query.'}
+        this.showAlert = true;
+      }
+
+    })
   }
 
 

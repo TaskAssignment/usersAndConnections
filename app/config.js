@@ -36,12 +36,18 @@ exports.mods = {
       sendData: true,
       successmsg: 'Operation Completed Successfully!',
       httpcode: 404,
-      errormsg: 'Object not found.'
+      errormsg: 'Object not found.',
+      fetchAll: false
     };
     var options = Object.assign({}, defaults, options);
 
+      if(options.fetchAll) {
+        var final = model.fetchAll()
+      } else {
+        var final = model.fetch()
+      }
 
-      return model.fetch().then(function(result){
+      return final.then(function(result){
           if(result != null) {
               if(options.sendData) {
                 return res.json(result.toJSON())
