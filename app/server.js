@@ -23,7 +23,7 @@ var handler = function(model, res, options = {}){
             if(options.sendData) {
               return res.json(result.toJSON())
             } else {
-              return res.send(options.successmsg)
+              return res.json({message: options.successmsg})
             }
         } else {
             res.statusCode = options.httpcode;
@@ -42,6 +42,12 @@ var handler = function(model, res, options = {}){
 //   console.log(result.toJSON())
 // })
 
+app.framework.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.framework.get('/', function(req, res) {
   return res.send('NodeJS Backend')
 })
@@ -58,11 +64,11 @@ app.framework.post('/login', function(req, res) {
     if(result != null) {
       if(app.mods.encrypt.verify(req.body.password, result.get('password'))) {
         // LOGGED IN
-        return res.send('OK!')
+        return res.json({message: 'login successful'})
       }
     }
     res.statusCode = 403;
-    return res.send('not ok.')
+    return res.json({message: 'login unsuccessful'})
   })
 })
 

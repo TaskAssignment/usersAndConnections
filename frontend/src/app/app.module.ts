@@ -1,16 +1,23 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
+import { SiteHeaderComponent } from './site-header.component';
+import { ApiService } from './api.service';
+import { HttpModule } from '@angular/http';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SiteHeaderComponent
   ],
   imports: [
-    BrowserModule
+    NgbModule.forRoot(),
+    BrowserModule,
+    HttpModule
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
