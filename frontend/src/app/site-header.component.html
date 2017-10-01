@@ -7,6 +7,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
+      <!-- this should be using angular routes instead -->
       <a class="nav-item nav-link" (click)="master.showLogin=false;master.showSearch=true;">Search</a>
       <a class="nav-item nav-link" (click)="master.showLogin=true;master.showSearch=false;" href="#">{{ master.state }}</a>
       <a class="nav-item nav-link" (click)="logout()" *ngIf="master.loggedIn" href="#">Logout</a>

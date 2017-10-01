@@ -99,9 +99,7 @@ app.framework.post('/search', function(req, res) {
 
 
 app.framework.get('/profile', authorize, function(req, res) {
-  // check if logged in, if they are redirect to their profile page
-  // if not redirect to login
-  // also get poke notifications
+  return res.send(req.user.toJSON())
 })
 
 app.framework.get('/profile/:id', authorize, function(req, res) {
@@ -113,8 +111,11 @@ app.framework.get('/profile/:id', authorize, function(req, res) {
 })
 
 app.framework.post('/profile', authorize, function(req, res) {
-  // update Social
-  // update profile info
+  user = req.user
+  req.user.set('name', req.body.name);
+  req.user.save()
+
+  return res.send(req.user.toJSON())
 })
 
 app.framework.post('/poke', authorize, function(req, res) {

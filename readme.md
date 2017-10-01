@@ -1,4 +1,4 @@
-Using Angular2, Bootstrap, NodeJS (v6.11) Npm (v3.10), Express, and SocketIO
+Using Angular2, Bootstrap, NodeJS (v6.11) Npm (v3.10), ExpressJS, and BookshelfJS
 
 
 

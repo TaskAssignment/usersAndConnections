@@ -22,7 +22,6 @@ export class ApiService {
 
   public attemptAuthorization() {
     let header = new Headers();
-    console.log(localStorage.getItem('userToken'))
     if(!localStorage.getItem('userToken')) {
       return false;
     }
@@ -68,13 +67,11 @@ export class ApiService {
 
   public getProfile() {
     let header = new Headers();
-    console.log(localStorage.getItem('userToken'))
     header.append('authorization', localStorage.getItem('userToken'))
     header.append('content-type', 'application/json')
     return this.http.get(this.endpoint+'profile', {
       headers: header
     }).toPromise().then(resp => {
-      console.log(JSON.parse(resp.text()))
       return JSON.parse(resp.text())
     }).catch(resp => {
       alert('Server Error!')
@@ -83,7 +80,18 @@ export class ApiService {
   }
 
   public updateProfile(name) {
-    return this.http.post(this.endpoint+'profile', {name: name}, {})
+    let header = new Headers();
+    header.append('authorization', localStorage.getItem('userToken'))
+    header.append('content-type', 'application/json')
+
+    return this.http.post(this.endpoint+'profile', {name: name}, {
+      headers: header
+    }).toPromise().then(resp => {
+      return JSON.parse(resp.text())
+    }).catch(resp => {
+      console.log('Couldn\'t update user.')
+      return false;
+    })
   }
 
 

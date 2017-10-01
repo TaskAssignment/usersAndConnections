@@ -25,9 +25,8 @@ export class SiteHeaderComponent {
 
   constructor(private apiService: ApiService, fb: FormBuilder){
     if(typeof localStorage.getItem('userToken') !== 'undefined') {
-      // try to login with token, if that is the case switch the master vars.
-      // if the token is invalid, remove it from local storage.
-      console.log('auth attempt: ',apiService.attemptAuthorization())
+      // try to login with token and switch the master vars.
+
       if(apiService.attemptAuthorization().valueOf()) {
         this.master.state = 'Profile';
         this.master.loggedIn = true;

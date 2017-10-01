@@ -4,7 +4,7 @@ var orm = require('../config').orm
 var Users = orm.Model.extend({
   tableName: 'users',
 
-  hidden: ['password'],
+  hidden: ['password', 'token'],
 
   getByUsername: function(name) {
     return this.where('username', name).fetch()
