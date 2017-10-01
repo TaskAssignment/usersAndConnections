@@ -1,3 +1,2 @@
-.vagrant/
 app/node_modules/
-public/components/
+frontend/node_modules/
