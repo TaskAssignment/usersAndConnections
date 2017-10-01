@@ -6,13 +6,18 @@ import { SiteHeaderComponent } from './site-header.component';
 import { ApiService } from './api.service';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
-
+import { LoginDialogComponent } from './login-dialog.component'
+import { ProfilePageComponent } from './profile-page.component'
+import { SearchPageComponent } from './search-page.component'
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SiteHeaderComponent
+    SiteHeaderComponent,
+    LoginDialogComponent,
+    ProfilePageComponent,
+    SearchPageComponent
   ],
   imports: [
     NgbModule.forRoot(),

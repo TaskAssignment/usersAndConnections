@@ -5,22 +5,17 @@ import 'rxjs/add/operator/catch';
 
 
 @Component({
-  selector: 'site-header',
-  templateUrl: './site-header.component.html',
+  selector: 'profile-page',
+  templateUrl: './profile-page.component.html',
   providers: [ ApiService ]
 })
 
-export class SiteHeaderComponent {
-  title = 'UsersAndConnections';
+export class ProfilePageComponent {
+  @Input('master') master;
 
-  master = {
-    state: 'Login',
-    showLogin: false,
-    showSearch: false,
-    loggedIn: false
-  }
 
 
   constructor(private apiService: ApiService, fb: FormBuilder){
   }
+
 }

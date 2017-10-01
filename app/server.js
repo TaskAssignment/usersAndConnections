@@ -32,6 +32,27 @@ var handler = function(model, res, options = {}){
     })
 };
 
+// Authorize token for request
+function authorize(req, res, next) {
+    var bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== 'undefined') {
+        users.where('token', bearerHeader).fetch().then(result => {
+          console.log('Search result: ',result)
+          if(result!=false && result!=null) {
+            req.user = result
+            next();
+          } else {
+            return res.sendStatus(403)
+          }
+        }).catch(result => {
+          return res.sendStatus(403);
+        })
+    } else {
+        return res.sendStatus(403);
+    }
+}
+
+
 // users.set({
 //   username: 'taylor',
 //   name: 'Taylor Christie',
@@ -45,11 +66,14 @@ var handler = function(model, res, options = {}){
 app.framework.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,x-access-token');
+  res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
 
-app.framework.get('/', function(req, res) {
-  return res.send('NodeJS Backend')
+app.framework.get('/', authorize, function(req, res) {
+  return res.send('NodeJS Backend. Welcome, '+req.user.get('username'))
 })
 
 // Done, needs token verification tho
@@ -60,11 +84,14 @@ app.framework.post('/login', function(req, res) {
     return res.send('bad request.')
   }
 
+
   users.getByUsername(req.body.username).then(function(result) {
     if(result != null) {
       if(app.mods.encrypt.verify(req.body.password, result.get('password'))) {
         // LOGGED IN
-        return res.json({message: 'login successful'})
+        result.set('token', app.mods.jwt.sign(result.toJSON(), app.config.JWT_SECRET));
+        result.save()
+        return res.json({message: 'login successful', token: result.get('token')})
       }
     }
     res.statusCode = 403;
@@ -73,7 +100,10 @@ app.framework.post('/login', function(req, res) {
 })
 
 // Unset user token
-app.framework.get('/logout', function(req, res) {
+app.framework.get('/logout', authorize, function(req, res) {
+  req.user.set('token', null)
+  req.user.save();
+  res.send('Logged out.')
 })
 
 // Done

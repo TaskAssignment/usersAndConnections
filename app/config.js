@@ -17,6 +17,7 @@ var express = require('express')
 var framework = require('express')()
 var bodyParser = require('body-parser')
 var crypt = require('password-hash')
+var jwt = require("jsonwebtoken");
 
 framework.use(bodyParser.json())
 framework.use(bodyParser.urlencoded({
@@ -28,5 +29,9 @@ exports.framework = framework
 exports.orm = Bookshelf
 exports.db = knex
 exports.mods = {
-  encrypt: crypt
+  encrypt: crypt,
+  jwt: jwt
+}
+exports.config = {
+  JWT_SECRET: '34580e4sdfjlk4849fudfjk38sdfsjfhdj'
 }

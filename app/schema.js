@@ -4,6 +4,7 @@ Schema = {
     username: {type: 'string', maxlength: 255, nullable: false, unique: true},
     name: {type: 'string', maxlength: 255, nullable: false},
     password: {type: 'string', maxlength: 255, nullable: false},
+    token: {type: 'string', maxlength:255, nullable: true}
   },
 
   social: {
