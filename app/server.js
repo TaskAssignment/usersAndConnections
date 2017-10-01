@@ -53,6 +53,7 @@ function authorize(req, res, next) {
 }
 
 
+
 // users.set({
 //   username: 'taylor',
 //   name: 'Taylor Christie',
@@ -67,7 +68,7 @@ app.framework.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,x-access-token');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
@@ -89,7 +90,7 @@ app.framework.post('/login', function(req, res) {
     if(result != null) {
       if(app.mods.encrypt.verify(req.body.password, result.get('password'))) {
         // LOGGED IN
-        result.set('token', app.mods.jwt.sign(result.toJSON(), app.config.JWT_SECRET));
+        result.set('token', app.mods.jwt.sign(result.get('username')+Date.now(), app.config.JWT_SECRET));
         result.save()
         return res.json({message: 'login successful', token: result.get('token')})
       }
@@ -115,31 +116,33 @@ app.framework.post('/search', function(req, res) {
   }
 
   return handler(users.search(req.body.query), res, {
-    errormsg: 'No results found.'
+    errormsg: 'No results found.',
+    sendData: true
   })
 
 })
 
 
-app.framework.get('/profile', function(req, res) {
+app.framework.get('/profile', authorize, function(req, res) {
   // check if logged in, if they are redirect to their profile page
   // if not redirect to login
   // also get poke notifications
 })
 
-app.framework.get('/profile/:id', function(req, res) {
+app.framework.get('/profile/:id', authorize, function(req, res) {
   id = req.params.id
   return handler(users.where('id', id), res, {
-    errormsg: 'User not found.'
+    errormsg: 'User not found.',
+    sendData: true
   })
 })
 
-app.framework.post('/profile', function(req, res) {
+app.framework.post('/profile', authorize, function(req, res) {
   // update Social
   // update profile info
 })
 
-app.framework.post('/poke', function(req, res) {
+app.framework.post('/poke', authorize, function(req, res) {
 
 })
 

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from './api.service';
 import { FormBuilder, FormGroup }   from '@angular/forms';
+import { OnInit } from '@angular/core';
 import 'rxjs/add/operator/catch';
 
 
@@ -10,12 +11,18 @@ import 'rxjs/add/operator/catch';
   providers: [ ApiService ]
 })
 
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit {
   @Input('master') master;
+  data;
+  ngOnInit() {
+    this.apiService.getProfile().then(results => {
+      this.data = results
 
+    })
 
-
+  }
   constructor(private apiService: ApiService, fb: FormBuilder){
   }
+
 
 }
