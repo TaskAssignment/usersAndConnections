@@ -5,6 +5,8 @@ import { AppComponent } from './app.component';
 import { SiteHeaderComponent } from './site-header.component';
 import { ApiService } from './api.service';
 import { HttpModule } from '@angular/http';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { HttpModule } from '@angular/http';
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

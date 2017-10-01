@@ -8,17 +8,15 @@ export class ApiService {
 
   private endpoint = 'http://localhost:4300/';
 
-  public tryLogin(username, password) : Object {
+  public tryLogin(username, password) {
     return this.http.post(this.endpoint+'login', {username: username, password: password}).toPromise().then(function(resp) {
       if(resp.status==200) {
-        alert('You are logged in!')
+        return true;
       }
-    }).catch(this.handleError);
+    }).catch(function(data) {
+      return false;
+    });
   }
 
 
-  protected handleError(data) {
-    console.log('HTTP error detected.')
-    console.dir(data)
-  };
 }
