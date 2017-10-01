@@ -26,6 +26,11 @@ export class SearchPageComponent {
 
   public search(form) {
     this.showAlert = false;
+    if(!form.query) {
+      this.alert = {type: 'danger', message: 'You need to enter a search term.'}
+      this.showAlert = true;
+      return false;
+    }
     this.apiService.searchUsers(form.query).then(resp => {
       if(resp && resp.length) {
         this.hasResults = true;

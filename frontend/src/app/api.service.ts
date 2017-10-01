@@ -90,7 +90,6 @@ export class ApiService {
     }).toPromise().then(resp => {
       return JSON.parse(resp.text())
     }).catch(resp => {
-      alert('Server Error!')
       return false
     });
   }

@@ -7,7 +7,7 @@ To demo:
 
 1) cd app/ && npm install && npm start
 starts application on localhost:4300
-2) cd frontend/ && ng serve
+2) cd frontend/ && npm install && ng serve
 start frontend on localhost:4200
 
 Functional Requirements:
