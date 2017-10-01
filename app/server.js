@@ -7,37 +7,12 @@ var users = require('./models/Users');
 var userSocial = require('./models/UserSocial')
 var pokes = require('./models/Pokes')
 
-
-var handler = function(model, res, options = {}){
-  var defaults = {
-    sendData: true,
-    successmsg: 'Operation Completed Successfully!',
-    httpcode: 404,
-    errormsg: 'Object not found.'
-  };
-  var options = Object.assign({}, defaults, options);
-
-
-    return model.fetch().then(function(result){
-        if(result != null) {
-            if(options.sendData) {
-              return res.json(result.toJSON())
-            } else {
-              return res.json({message: options.successmsg})
-            }
-        } else {
-            res.statusCode = options.httpcode;
-            return res.send(options.errormsg)
-        }
-    })
-};
-
-// Authorize token for request
-function authorize(req, res, next) {
+// ext functions for ease of use
+var handler = app.mods.handler
+var authorize = function(req, res, next) {
     var bearerHeader = req.headers["authorization"];
     if (typeof bearerHeader !== 'undefined') {
         users.where('token', bearerHeader).fetch().then(result => {
-          console.log('Search result: ',result)
           if(result!=false && result!=null) {
             req.user = result
             next();
@@ -89,7 +64,7 @@ app.framework.post('/login', function(req, res) {
   users.getByUsername(req.body.username).then(function(result) {
     if(result != null) {
       if(app.mods.encrypt.verify(req.body.password, result.get('password'))) {
-        // LOGGED IN
+        // Set Token
         result.set('token', app.mods.jwt.sign(result.get('username')+Date.now(), app.config.JWT_SECRET));
         result.save()
         return res.json({message: 'login successful', token: result.get('token')})

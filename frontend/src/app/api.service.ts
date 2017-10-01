@@ -20,6 +20,51 @@ export class ApiService {
     });
   }
 
+  public attemptAuthorization() {
+    let header = new Headers();
+    console.log(localStorage.getItem('userToken'))
+    if(!localStorage.getItem('userToken')) {
+      return false;
+    }
+    header.append('authorization', localStorage.getItem('userToken'))
+    header.append('content-type', 'application/json')
+    return this.http.get(this.endpoint, {
+      headers: header
+    }).toPromise().then(resp => {
+      if(resp.status==200) {
+        console.log('Your logged in.')
+        return true;
+      } else {
+        console.log('non-200 status')
+        return false;
+      }
+    }).catch(err => {
+      console.log('HTTP ERR: ', err.status)
+      return false;
+    })
+
+  }
+
+  public logoutUser() {
+    let header = new Headers();
+    if(!localStorage.getItem('userToken')) {
+      return true;
+    }
+    header.append('authorization', localStorage.getItem('userToken'))
+    header.append('content-type', 'application/json')
+    return this.http.get(this.endpoint+'logout', {
+      headers: header
+    }).toPromise().then(resp => {
+      localStorage.removeItem('userToken');
+      return true;
+    }).catch(err => {
+      console.log('HTTP ERR')
+      console.log(err)
+      return false
+    })
+
+  }
+
 
   public getProfile() {
     let header = new Headers();

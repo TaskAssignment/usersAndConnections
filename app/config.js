@@ -30,7 +30,30 @@ exports.orm = Bookshelf
 exports.db = knex
 exports.mods = {
   encrypt: crypt,
-  jwt: jwt
+  jwt: jwt,
+  handler: function(model, res, options = {}){
+    var defaults = {
+      sendData: true,
+      successmsg: 'Operation Completed Successfully!',
+      httpcode: 404,
+      errormsg: 'Object not found.'
+    };
+    var options = Object.assign({}, defaults, options);
+
+
+      return model.fetch().then(function(result){
+          if(result != null) {
+              if(options.sendData) {
+                return res.json(result.toJSON())
+              } else {
+                return res.json({message: options.successmsg})
+              }
+          } else {
+              res.statusCode = options.httpcode;
+              return res.send(options.errormsg)
+          }
+      })
+  }
 }
 exports.config = {
   JWT_SECRET: '34580e4sdfjlk4849fudfjk38sdfsjfhdj'
